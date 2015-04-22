@@ -1,8 +1,8 @@
 var createDomain = require('domain').create
-
+var count = 1;
 var domainMiddleware = module.exports = function(req, res, next) {
   var domain = createDomain();
-  domain.id = domainMiddleware.id(req);
+  domain.id = new Date().getTime() + (count++);
   domain.add(req);
   domain.add(res);
   domain.run(function() {
@@ -13,9 +13,3 @@ var domainMiddleware = module.exports = function(req, res, next) {
   });
 };
 
-var count = 0;
-//you can replace this method to
-//supply your own id builder
-domainMiddleware.id = function(req) {
-  return new Date().getTime() + (count++);
-};
